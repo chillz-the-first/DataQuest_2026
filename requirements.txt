@@ -1,0 +1,9 @@
+pandas>=2.0
+numpy
+scikit-learn
+matplotlib
+seaborn
+plotly
+streamlit
+optbinning
+jupyter
