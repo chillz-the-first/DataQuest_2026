@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9327dd29-45ad-46d2-86df-6f128ddee67f" name="Changes" comment="Correlation check">
+    <list default="true" id="9327dd29-45ad-46d2-86df-6f128ddee67f" name="Changes" comment="EDA Findings Summary">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebooks/02_eda_findings.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/02_eda_findings.ipynb" afterDir="false" />
     </list>
@@ -78,7 +78,7 @@
       <workItem from="1779219309567" duration="4423000" />
       <workItem from="1779237342467" duration="1177000" />
       <workItem from="1779238525666" duration="987000" />
-      <workItem from="1779270374067" duration="9329000" />
+      <workItem from="1779270374067" duration="16188000" />
     </task>
     <task id="LOCAL-00001" summary="Cleaned dataset">
       <option name="closed" value="true" />
@@ -120,7 +120,23 @@
       <option name="project" value="LOCAL" />
       <updated>1779291865683</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Performed bivariate analysis on top features">
+      <option name="closed" value="true" />
+      <created>1779294990985</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1779294990985</updated>
+    </task>
+    <task id="LOCAL-00007" summary="EDA Findings Summary">
+      <option name="closed" value="true" />
+      <created>1779300068613</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1779300068613</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,6 +146,8 @@
     <MESSAGE value="Cleaned dataset" />
     <MESSAGE value="feat: functions that compute iv and plot default rate" />
     <MESSAGE value="Correlation check" />
-    <option name="LAST_COMMIT_MESSAGE" value="Correlation check" />
+    <MESSAGE value="Performed bivariate analysis on top features" />
+    <MESSAGE value="EDA Findings Summary" />
+    <option name="LAST_COMMIT_MESSAGE" value="EDA Findings Summary" />
   </component>
 </project>
