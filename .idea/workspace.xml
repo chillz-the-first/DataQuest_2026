@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9327dd29-45ad-46d2-86df-6f128ddee67f" name="Changes" comment="feat: fixed diagram creation for default rate by bin">
+    <list default="true" id="9327dd29-45ad-46d2-86df-6f128ddee67f" name="Changes" comment="Reformatted bins to display them correctly">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/streamlit_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/streamlit_app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,7 +79,7 @@
       <workItem from="1779219309567" duration="4423000" />
       <workItem from="1779237342467" duration="1177000" />
       <workItem from="1779238525666" duration="987000" />
-      <workItem from="1779270374067" duration="22549000" />
+      <workItem from="1779270374067" duration="25155000" />
     </task>
     <task id="LOCAL-00001" summary="Cleaned dataset">
       <option name="closed" value="true" />
@@ -200,7 +201,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779327910353</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Reformatted bins to display them correctly">
+      <option name="closed" value="true" />
+      <created>1779328438365</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1779328438365</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,7 +227,8 @@
     <MESSAGE value="feat: added univariate explorer" />
     <MESSAGE value="feat: added univariate explorer to analyse each feature" />
     <MESSAGE value="feat: fixed diagram creation for default rate by bin" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: fixed diagram creation for default rate by bin" />
+    <MESSAGE value="Reformatted bins to display them correctly" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reformatted bins to display them correctly" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DataQuest_2026$streamlit_app.coverage" NAME="streamlit_app Coverage Results" MODIFIED="1779302251845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />

@@ -8,6 +8,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from src.features import compute_woe_iv, compute_all_iv
 from src.cleaning import report
@@ -121,6 +122,49 @@ with tab1:
     woe_display = woe_df[display_cols].copy()
     woe_display["bin"] = woe_display["bin"].astype(str)
     st.dataframe(woe_display.round(4), use_container_width=True)
+
+    # -------------------- Section 3: Bivariate Explorer --------------------
+    st.subheader("Bivariate Explorer")
+
+    col_a, col_b = st.columns(2)
+    with col_a:
+        feature_x = st.selectbox("Select first feature", feature_options, key="bivar_x")
+    with col_b:
+        feature_y = st.selectbox("Select second feature", feature_options, key="bivar_y")
+
+    if feature_x == feature_y:
+        st.warning("Please select two different features")
+    else:
+        def bin_feature(series, n_bins=5):
+            if pd.api.types.is_numeric_dtype(series):
+                return pd.qcut(series, q=n_bins, duplicates="drop").astype(str)
+            else:
+                return series.astype(str)
+
+        temp = train[[feature_x, feature_y, "default_flag"]].copy()
+        temp["x_bin"] = bin_feature(temp[feature_x])
+        temp["y_bin"] = bin_feature(temp[feature_y])
+
+        # Cross table of default rates
+        cross = temp.groupby(["x_bin", "y_bin"], observed=True)["default_flag"].mean().round(3)
+        cross_table = cross.unstack(fill_value=0)
+
+        # Heatmap
+        st.markdown("#### Default Rate Heatmap")
+        fig, ax = plt.subplots(figsize=(10, 5))
+
+        sns.heatmap(data=cross_table, annot=True, fmt=".2f", cmap="RdYlGn_r", ax=ax, linewidths=0.5)
+        ax.set_title(f"Default Rate Heatmap: {feature_x} vs. {feature_y}")
+        ax.set_xlabel(feature_x)
+        ax.set_ylabel(feature_y)
+
+        plt.tight_layout()
+        st.pyplot(fig)
+        plt.close()
+
+        # Cross table
+        st.markdown("#### Default Rate Table")
+        st.dataframe(cross_table, use_container_width=True)
 
 
 with tab2:
