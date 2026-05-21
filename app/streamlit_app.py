@@ -59,7 +59,72 @@ with tab1:
     dtypes_df.columns = ["Feature", "Type"]
     st.dataframe(dtypes_df, use_container_width=True)
 
+    # -------------------- Section 2: Univariate Explorer --------------------
+    st.subheader("Univariate Explorer")
 
+    exclude_cols = ["applicant_id_hash", "default_flag", "set", "application_date"]
+    feature_options = [c for c in df.columns if c not in exclude_cols]
+
+    selected_feature = st.selectbox("Select a feature to explore", feature_options)
+
+    woe_df, iv = compute_woe_iv(train, selected_feature, "default_flag")
+
+    st.metric("Information Value (IV)", f"{iv:.4f}")
+
+    col_left, col_right = st.columns(2)
+    with col_left:
+        st.markdown("### Feature Distribution")
+        fig, ax = plt.subplots(figsize=(6,4))
+
+        if pd.api.types.is_numeric_dtype(train[selected_feature]):
+            ax.hist(train[selected_feature].dropna(), bins=30, color="steelblue", edgecolor="white")
+        else:
+            counts = train[selected_feature].value_counts()
+            ax.bar(counts.index.astype(str), counts.values, color="steelblue")
+            plt.xticks(rotation=45, ha="right")
+
+        ax.set_title(f"Distribution of {selected_feature}")
+        ax.set_xlabel(selected_feature)
+        ax.set_ylabel("Count")
+
+        plt.tight_layout()
+        st.pyplot(fig)
+        plt.close()
+
+    with col_right:
+        st.markdown("### Default Rate by Bin")
+        fig, ax = plt.subplots(figsize=(6,4))
+
+        ax.bar(
+            range(len(woe_df)),
+            woe_df["iv_bin"] * 0 + woe_df.groupby("bin")["default_flag"].transform("mean") if "default_flag" in woe_df.columns else woe_df["woe"],
+            color="steelblue"
+        )
+
+        # Calculate default rate per bin directly
+        temp = train[[selected_feature, "default_flag"]].copy()
+        if pd.api.types.is_numeric_dtype(train[selected_feature]):
+            temp["bin"] = pd.qcut(temp[selected_feature], q=10, duplicates="drop")
+        else:
+            temp["bin"] = temp[selected_feature]
+
+        grouped = temp.groupby("bin", observed=True)["default_flag"].mean().reset_index()
+        grouped.columns = ["bin", "default_rate"]
+
+        ax.bar(range(len(grouped)), grouped["default_rate"], color="coral")
+        ax.set_xticks(range(len(grouped)))
+        ax.set_xticklabels(grouped["bin"].astype(str), rotation=45, ha="right")
+        ax.set_title(f"Default Rate by Bin - {selected_feature}")
+        ax.set_ylabel("Default Rate")
+
+        plt.tight_layout()
+        st.pyplot(fig)
+        plt.close()
+
+    # WoE Table
+    st.markdown("#### WoE ? IV Table")
+    display_cols = ["bin", "events", "non_events", "woe", "iv_bin"]
+    st.dataframe(woe_df[display_cols].round(4), use_container_width=True)
 
 
 with tab2:
