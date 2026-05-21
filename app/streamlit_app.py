@@ -286,3 +286,18 @@ with tab3:
     X_test_dash = final_scaler.transform(test_eng[models["final_features"]])
     test_eng["pred_default_prob"] = final_model.predict_proba(X_test_dash)[:, 1]
 
+    # -------------------- Threshold slider --------------------
+    st.subheader("Approval Threshold")
+    st.markdown(
+        "Only applicants with a default probability the threshold are approved"
+        "Move the slider to see how volume and risk change."
+    )
+
+    threshold = st.slider(
+        "Default probability threshold",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.5,
+        step=0.1
+
+
