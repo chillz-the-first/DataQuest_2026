@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9327dd29-45ad-46d2-86df-6f128ddee67f" name="Changes" comment="built the improved model using WoE-encoded features and interaction feature">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebooks/03_modeling.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/03_modeling.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,7 +80,7 @@
       <workItem from="1779238525666" duration="987000" />
       <workItem from="1779270374067" duration="27686000" />
       <workItem from="1779333736240" duration="4661000" />
-      <workItem from="1779371380862" duration="5566000" />
+      <workItem from="1779371380862" duration="8704000" />
     </task>
     <task id="LOCAL-00001" summary="Cleaned dataset">
       <option name="closed" value="true" />
