@@ -137,17 +137,31 @@ with tab1:
     else:
         def bin_feature(series, n_bins=5):
             if pd.api.types.is_numeric_dtype(series):
-                return pd.qcut(series, q=n_bins, duplicates="drop").astype(str)
+                binned = pd.qcut(series, q=n_bins, duplicates="drop")
+                # Sort categories by their left edge so they can be displayed in order
+                sorted_cats = sorted(binned.cat.categories, key=lambda x: x.left)
+                binned = binned.cat.reorder_categories(sorted_cats)
+                return binned.astype(str)
             else:
                 return series.astype(str)
+
 
         temp = train[[feature_x, feature_y, "default_flag"]].copy()
         temp["x_bin"] = bin_feature(temp[feature_x])
         temp["y_bin"] = bin_feature(temp[feature_y])
 
+        # Sort bin labels numerically
+        x_order = sorted(temp["x_bin"].unique(), key=lambda s: float(s.split(",")[0].strip("([ ")))
+        y_order = sorted(temp["y_bin"].unique(), key=lambda s: float(s.split(",")[0].strip("([ ")))
+
         # Cross table of default rates
         cross = temp.groupby(["x_bin", "y_bin"], observed=True)["default_flag"].mean().round(3)
         cross_table = cross.unstack(fill_value=0)
+
+        # Reorder rows and columns
+        cross_table = cross_table.reindex(index=x_order, columns=y_order)
+        # Reverse rows so that lowest values are at the bottom
+        cross_table = cross_table.iloc[::-1]
 
         # Heatmap
         st.markdown("#### Default Rate Heatmap")
