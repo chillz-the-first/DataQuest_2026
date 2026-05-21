@@ -9,6 +9,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pickle
+from sklearn.metrics import roc_curve
 
 from src.features import compute_woe_iv, compute_all_iv
 from src.cleaning import report
@@ -29,6 +31,15 @@ def load_data():
 df = load_data()
 train = df[df["set"] == "train"].copy()
 test = df[df["set"] == "test"].copy()
+
+@st.cache_data
+def load_models():
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path = os.path.join(project_root, "outputs", "model_objects.pkl")
+    with open(path, "rb") as f:
+        return pickle.load(f)
+
+models = load_models()
 
 # -------------------- Tabs --------------------
 tab1, tab2, tab3 = st.tabs(["EDA", "Model", "Dashboard"])
@@ -183,7 +194,82 @@ with tab1:
 
 with tab2:
     st.header("Model Evaluation")
-    st.write("Coming soon")
+
+    # -------------------- Key Metrics --------------------
+    st.subheader("AUC Comparison")
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Baseline AUC", f"{models['baseline_auc']:.4f}")
+    col2.metric("Improved AUC", f"{models['final_auc']:.4f}")
+    col3.metric("Improvement", f"{models['final_auc'] - models['baseline_auc']:.4f}")
+
+    # -------------------- ROC Curve --------------------
+    st.subheader("ROC Curve Comparison")
+    baseline_scaler = models["baseline_scaler"]
+    final_scaler = models["final_scaler"]
+    baseline_model = models["baseline_model"]
+    final_model = models["final_model"]
+    X_test_base = baseline_scaler.transform(test[models["baseline_features"]])
+    y_pred_base = baseline_model.predict_proba(X_test_base)[:, 1]
+    # Recreating engineered features for the improved model
+    test_eng = test.copy()
+    test_eng["income_to_loan_ratio"] = test["annual_income"] / (test["loan_amount"] + 1)
+    test_eng["delinquency_severity"] = test["num_delinquencies_2yr"] / (test["months_since_last_delinquency"])
+    test_eng["revolving_to_income"] = test["total_revolving_balance"] / (test["annual_income"] + 1)
+    test_eng["loan_income_x_dti"] = (test["loan_amount"] / (test["annual_income"] + 1)) * test["dti_ratio"]
+
+    X_test_imp = final_scaler.transform(test_eng[models["final_features"]])
+    y_pred_imp = final_model.predict_proba(X_test_imp)[:, 1]
+
+    fpr_base, tpr_base, _ = roc_curve(test["default_flag"], y_pred_base)
+    fpr_imp, tpr_imp, _ = roc_curve(test["default_flag"], y_pred_imp)
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.plot(fpr_base, tpr_base, color="gray", label=f"Baseline (AUC = {models['baseline_auc']:.3f})")
+    ax.plot(fpr_imp, tpr_imp, color="steelblue", label=f"Improved (AUC = {models['final_auc']:.3f}")
+    ax.plot([0,1], [0,1], color="lightgray", linestyle="--", label="Random (AUC = 0.500")
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
+    ax.set_title("ROC Curve: Baseline vs Improved")
+    ax.legend()
+
+    plt.tight_layout()
+    st.pyplot(fig)
+    plt.close()
+
+    # -------------------- Feature Importance --------------------
+    st.subheader("Feature Coefficients (Improved Model)")
+
+    coef_df = pd.DataFrame({
+        "Feature": models["final_features"],
+        "Coefficient:": final_model.coef_[0]
+    })
+    coef_df["Abs_Coefficient"] = coef_df["Coefficient:"].abs()
+    coef_df = coef_df.sort_values("Abs_Coefficient", ascending=True)
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    colors = ["coral" if c > 0 else "steelblue" for c in coef_df["Coefficient:"]]
+    ax.barh(coef_df["Feature"], coef_df["Coefficient:"], color=colors)
+    ax.set_xlabel("Coefficient Value")
+    ax.set_title("Feature Coefficients for Improved Model")
+    ax.axvline(x=0, color="gray", linewidth=0.5)
+
+    plt.tight_layout()
+    st.pyplot(fig)
+    plt.close()
+
+    st.caption("Red = increases default risk and Blue = decreases default risk")
+
+    # -------------------- Model Equation --------------------
+    st.subheader("Model Equation")
+    st.markdown("**P(default) = 1 / (1 + e(^-n))**")
+    st.markdown("where n=")
+
+    equation_df = pd.DataFrame({
+        "Feature": ["intercept"] + models["final_features"],
+        "Coefficient": [final_model.intercept_[0]] + list(final_model.coef_[0])
+    }).round(4)
+    st.dataframe(equation_df, use_container_width=True)
+
 
 with tab3:
     st.header("Business Dashboard")
