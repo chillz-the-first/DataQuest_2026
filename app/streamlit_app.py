@@ -34,7 +34,33 @@ tab1, tab2, tab3 = st.tabs(["EDA", "Model", "Dashboard"])
 
 with tab1:
     st.header("Exploratory Data Analysis")
-    st.write("Coming soon")
+
+    # -------------------- Section 1: Data Quality Report --------------------
+    st.subheader("Data Quality Report")
+
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Total Rows", f"{len(df):,}")
+    col2.metric("Total Columns", df.shape[1])
+    col3.metric("Default Rate", f"{df['default_flag'].mean():.1%}")
+
+    st.markdown("#### Missing Values")
+    missing = df.isnull().sum()
+    missing = missing[missing>0].reset_index()
+    missing.columns = ["Feature", "Missing Count"]
+    missing["Missing %"] = (missing["Missing Count"] / len(df) * 100).round(2)
+
+    if len(missing) > 0:
+        st.dataframe(missing, use_container_width=True)
+    else:
+        st.success("No missing values")
+
+    st.markdown("#### Data Types")
+    dtypes_df = df.dtypes.reset_index()
+    dtypes_df.columns = ["Feature", "Type"]
+    st.dataframe(dtypes_df, use_container_width=True)
+
+
+
 
 with tab2:
     st.header("Model Evaluation")
