@@ -93,13 +93,6 @@ with tab1:
 
     with col_right:
         st.markdown("### Default Rate by Bin")
-        fig, ax = plt.subplots(figsize=(6,4))
-
-        ax.bar(
-            range(len(woe_df)),
-            woe_df["iv_bin"] * 0 + woe_df.groupby("bin")["default_flag"].transform("mean") if "default_flag" in woe_df.columns else woe_df["woe"],
-            color="steelblue"
-        )
 
         # Calculate default rate per bin directly
         temp = train[[selected_feature, "default_flag"]].copy()
@@ -111,6 +104,7 @@ with tab1:
         grouped = temp.groupby("bin", observed=True)["default_flag"].mean().reset_index()
         grouped.columns = ["bin", "default_rate"]
 
+        fig, ax = plt.subplots(figsize=(6,4))
         ax.bar(range(len(grouped)), grouped["default_rate"], color="coral")
         ax.set_xticks(range(len(grouped)))
         ax.set_xticklabels(grouped["bin"].astype(str), rotation=45, ha="right")
@@ -122,7 +116,7 @@ with tab1:
         plt.close()
 
     # WoE Table
-    st.markdown("#### WoE ? IV Table")
+    st.markdown("#### WoE / IV Table")
     display_cols = ["bin", "events", "non_events", "woe", "iv_bin"]
     st.dataframe(woe_df[display_cols].round(4), use_container_width=True)
 
