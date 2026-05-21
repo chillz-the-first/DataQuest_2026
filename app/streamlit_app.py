@@ -299,5 +299,24 @@ with tab3:
         max_value=1.0,
         value=0.5,
         step=0.1
+    )
+
+    # -------------------- Calculate metrics at threshold --------------------
+    approved = test_eng[test_eng["pred_default_prob"] < threshold]
+    rejected = test_eng[test_eng["pred_default_prob"] >= threshold]
+
+    total = len(test_eng)
+    n_approved = len(approved)
+    n_rejected = len(rejected)
+    approval_rate = n_approved / total
+    default_rate_approved = approved["default_flag"].mean() if n_approved > 0 else 0
+
+    # -------------------- Display metrics --------------------
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Approved", f"{n_approved:,}")
+    col2.metric("Rejected", f"{n_rejected:,}")
+    col3.metric("Approval Rate", f"{approval_rate:,}")
+    col4.metric("Default Rate (Approved)", f"{default_rate_approved:.1%}")
+
 
 
