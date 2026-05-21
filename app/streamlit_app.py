@@ -270,8 +270,19 @@ with tab2:
     }).round(4)
     st.dataframe(equation_df, use_container_width=True)
 
-
 with tab3:
     st.header("Business Dashboard")
-    st.write("Coming soon")
+
+    # -------------------- Get predictions on test set --------------------
+    test_eng = test.copy()
+    test_eng["income_to_loan_ratio"] = test["annual_income"] / (test["loan_amount"] + 1)
+    test_eng["delinquency_severity"] = test["num_delinquencies_2yr"] / (test["months_since_last_delinquency"] + 1)
+    test_eng["revolving_to_income"] = test["total_revolving_balance"] / (test["annual_income"] + 1)
+    test_eng["loan_income_x_dti"] = (test["loan_amount"] / (test["annual_income"] + 1)) * test["dti_ratio"]
+
+    final_scaler = models["final_scaler"]
+    final_model = models["final_model"]
+
+    X_test_dash = final_scaler.transform(test_eng[models["final_features"]])
+    test_eng["pred_default_prob"] = final_model.predict_proba(X_test_dash)[:, 1]
 
