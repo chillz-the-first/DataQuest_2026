@@ -78,7 +78,7 @@
       <workItem from="1779219309567" duration="4423000" />
       <workItem from="1779237342467" duration="1177000" />
       <workItem from="1779238525666" duration="987000" />
-      <workItem from="1779270374067" duration="22112000" />
+      <workItem from="1779270374067" duration="22549000" />
     </task>
     <task id="LOCAL-00001" summary="Cleaned dataset">
       <option name="closed" value="true" />
@@ -192,7 +192,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779327805333</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="feat: fixed diagram creation for default rate by bin">
+      <option name="closed" value="true" />
+      <created>1779327910353</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1779327910353</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

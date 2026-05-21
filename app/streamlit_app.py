@@ -118,7 +118,9 @@ with tab1:
     # WoE Table
     st.markdown("#### WoE / IV Table")
     display_cols = ["bin", "events", "non_events", "woe", "iv_bin"]
-    st.dataframe(woe_df[display_cols].round(4), use_container_width=True)
+    woe_display = woe_df[display_cols].copy()
+    woe_display["bin"] = woe_display["bin"].astype(str)
+    st.dataframe(woe_display.round(4), use_container_width=True)
 
 
 with tab2:
