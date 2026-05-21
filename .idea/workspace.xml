@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9327dd29-45ad-46d2-86df-6f128ddee67f" name="Changes" comment="built the improved model using WoE-encoded features and interaction feature">
+    <list default="true" id="9327dd29-45ad-46d2-86df-6f128ddee67f" name="Changes" comment="fix: improved model revision 3&#10;&#10;If each is engineered features helps improve the AUC, before deciding to drop or keep it">
       <change beforePath="$PROJECT_DIR$/notebooks/03_modeling.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/03_modeling.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +80,7 @@
       <workItem from="1779238525666" duration="987000" />
       <workItem from="1779270374067" duration="27686000" />
       <workItem from="1779333736240" duration="4661000" />
-      <workItem from="1779371380862" duration="8704000" />
+      <workItem from="1779371380862" duration="9702000" />
     </task>
     <task id="LOCAL-00001" summary="Cleaned dataset">
       <option name="closed" value="true" />
@@ -258,7 +258,23 @@
       <option name="project" value="LOCAL" />
       <updated>1779337825623</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="fix: improved model revision 3&#10;&#10;If each is engineered features helps improve the AUC, before deciding to drop or keep it">
+      <option name="closed" value="true" />
+      <created>1779380143821</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1779380143821</updated>
+    </task>
+    <task id="LOCAL-00024" summary="fix: improved model revision 3&#10;&#10;If each is engineered features helps improve the AUC, before deciding to drop or keep it">
+      <option name="closed" value="true" />
+      <created>1779380200405</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1779380200405</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -283,7 +299,8 @@
     <MESSAGE value="plotted the roc curve for the baseline model" />
     <MESSAGE value="feat: added a function that computes WoE bins on training dataset" />
     <MESSAGE value="built the improved model using WoE-encoded features and interaction feature" />
-    <option name="LAST_COMMIT_MESSAGE" value="built the improved model using WoE-encoded features and interaction feature" />
+    <MESSAGE value="fix: improved model revision 3&#10;&#10;If each is engineered features helps improve the AUC, before deciding to drop or keep it" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: improved model revision 3&#10;&#10;If each is engineered features helps improve the AUC, before deciding to drop or keep it" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DataQuest_2026$streamlit_app.coverage" NAME="streamlit_app Coverage Results" MODIFIED="1779302251845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
