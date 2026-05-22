@@ -318,5 +318,46 @@ with tab3:
     col3.metric("Approval Rate", f"{approval_rate:,}")
     col4.metric("Default Rate (Approved)", f"{default_rate_approved:.1%}")
 
+    # -------------------- Volume vs Risk Chart --------------------
+    st.subheader("Volume vs Risk Trade-off")
+
+    threshold = np.arange(0.05, 1.0, 0.01)
+    approval_rates = []
+    default_rates = []
+
+    for th in threshold:
+        approved_t = test_eng[test_eng["pred_default_prob"] < th]
+        apr_rate = len(approved_t) / total
+        def_rate = approved_t["default_flag"].mean() if len(approved_t) > 0 else 0
+        approval_rates.append(apr_rate)
+        default_rates.append(def_rate)
+
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+
+    # Approval rate
+    color_b = "steelblue"
+    ax1.plot(threshold, approval_rates, color=color_b, label="Approval Rate")
+    ax1.set_xlabel("Threshold")
+    ax1.set_ylabel("Approval Rate (%)", color=color_b)
+    ax1.tick_params(axis="y", labelcolor=color_b)
+
+    # Default rate
+    ax2 = ax1.twinx()
+    color_r = "coral"
+    ax2.plot(threshold, default_rates, color=color_r, label="Default Rate")
+    ax2.set_ylabel("Default Rate (%)", color=color_r)
+    ax2.tick_params(axis="y", labelcolor=color_r)
+
+    # Mark current threshold
+    # ax1.axvline(x=threshold, color="gray", linestyle="--", alpha=0.7,
+    #             label=f"Current ({float(threshold):.2f})")
+
+    ax1.set_title("Approval Rate vs Default Rate at Different Thresholds")
+    ax1.legend(loc="upper left")
+    ax2.legend(loc="upper right")
+
+    plt.tight_layout()
+    st.pyplot(fig)
+    plt.close()
 
 
