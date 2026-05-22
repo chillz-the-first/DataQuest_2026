@@ -4,9 +4,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, roc_curve
 from sklearn.preprocessing import StandardScaler
 
-from app.streamlit_app import grouped
-
-
 def woe_encode(train_series, test_series, target, bins=10):
     """
         Compute WoE bins on train, then apply the same mapping to test.
@@ -35,7 +32,7 @@ def woe_encode(train_series, test_series, target, bins=10):
         (grouped["events"] / (total_events + eps) + eps)
     )
 
-    woe_map = dict(zip(grouped["non_events"], grouped["woe"]))
+    woe_map = dict(zip(grouped["bin"], grouped["woe"]))
     train_woe = temp["bin"].map(woe_map)
 
     if bin_edges is not None:

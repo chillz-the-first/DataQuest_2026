@@ -213,7 +213,7 @@ with tab2:
     # Recreating engineered features for the improved model
     test_eng = test.copy()
     test_eng["income_to_loan_ratio"] = test["annual_income"] / (test["loan_amount"] + 1)
-    test_eng["delinquency_severity"] = test["num_delinquencies_2yr"] / (test["months_since_last_delinquency"])
+    test_eng["delinquency_severity"] = test["num_delinquencies_2yr"] / (test["months_since_last_delinquency"] + 1)
     test_eng["revolving_to_income"] = test["total_revolving_balance"] / (test["annual_income"] + 1)
     test_eng["loan_income_x_dti"] = (test["loan_amount"] / (test["annual_income"] + 1)) * test["dti_ratio"]
 
