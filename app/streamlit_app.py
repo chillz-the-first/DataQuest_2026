@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pickle
-from sklearn.metrics import roc_curve
+from sklearn.metrics import roc_curve, precision_score, recall_score
 
 from src.features import compute_woe_iv, compute_all_iv
 from src.cleaning import report
@@ -293,17 +293,17 @@ with tab3:
         "Move the slider to see how volume and risk change."
     )
 
-    threshold = st.slider(
+    selected_threshold = float(st.slider(
         "Default probability threshold",
         min_value=0.0,
         max_value=1.0,
         value=0.5,
         step=0.1
-    )
+    ))
 
     # -------------------- Calculate metrics at threshold --------------------
-    approved = test_eng[test_eng["pred_default_prob"] < threshold]
-    rejected = test_eng[test_eng["pred_default_prob"] >= threshold]
+    approved = test_eng[test_eng["pred_default_prob"] < selected_threshold]
+    rejected = test_eng[test_eng["pred_default_prob"] >= selected_threshold]
 
     total = len(test_eng)
     n_approved = len(approved)
@@ -349,7 +349,7 @@ with tab3:
     ax2.tick_params(axis="y", labelcolor=color_r)
 
     # Mark current threshold
-    # ax1.axvline(x=threshold, color="gray", linestyle="--", alpha=0.7,
+    # ax1.axvline(x=selected_threshold, color="gray", linestyle="--", alpha=0.7,
     #             label=f"Current ({float(threshold):.2f})")
 
     ax1.set_title("Approval Rate vs Default Rate at Different Thresholds")
@@ -360,4 +360,25 @@ with tab3:
     st.pyplot(fig)
     plt.close()
 
+    # -------------------- Precision vs Recall explanation --------------------
+    st.subheader("Precision and Recall explanation")
 
+    y_pred_binary = (test_eng["pred_default_prob"] >= selected_threshold).astype(int)
+    y_true = test_eng["default_flag"]
+
+    if y_pred_binary.sum() > 0 and (1 - y_pred_binary).sum() > 0:
+        precision = precision_score(y_true, y_pred_binary)
+        recall = recall_score(y_true, y_pred_binary)
+
+        col1, col2 = st.columns(2)
+        col1.metric("Precision", f"{precision:.1%}")
+        col1.caption("Out of the applicants that were flagged as risky and rejected, "
+                     "what percentage would have actually defaulted? "
+                     "A high number means fewer good customers were wrongly rejected.")
+
+        col2.metric("Recall", f"{recall:.1%}")
+        col2.caption("Out of all the applicants that actually defaulted."
+                     "How many did we catch and reject?"
+                     "A high number means fewer bad loans slipping through.")
+    else:
+        st.warning("Adjust the threshold, the current approves everyone or rejects everyone.")
