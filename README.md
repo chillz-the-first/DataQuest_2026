@@ -169,3 +169,5 @@ Full list in `requirements.txt`.
 | EDA notebook | `notebooks/02_eda_findings.ipynb` |
 | Modelling notebook | `notebooks/03_modeling.ipynb` |
 | AI usage reflection | `ai_log.md` |
+
+Streamlit app link:https://ns3nkd6aiitd4z4gyn9b8h.streamlit.app/
